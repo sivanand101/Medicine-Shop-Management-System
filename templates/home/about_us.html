@@ -1,0 +1,55 @@
+{% extends 'basic.html' %}
+
+{% block title%} About {% endblock %}
+{% block aboutactive %} active{% endblock aboutactive %}
+{% block body %}
+
+<div class="col-md-6 offset-md-3">
+
+            <h1 class="bd-title" id="content">About</h1>
+            <p class="bd-lead">This project is made for Pharmacy Database Management System. </p>
+
+           <h1>Team members : </h1>
+            <p>Sivanand Mahapatra </p>
+            <p>Arpit Arora</P>
+            </p>Nitish Kumar</p>
+            <p>Athrey Agnihotri</p>
+            
+            <h1>Technology :</h1>
+            <h4>Backend:</h4> <P>Python Django-Framework.</P>
+            <h4>Frontend:</h4><p> HTML5, CSS, Javascript.</P>
+
+
+            
+             <h2><center>DESIGNED BY STUDENTS OF KLE TECHNOLOGICAL UNIVERSITY!</center></h2>
+       
+
+
+
+            
+
+
+</div>
+<body style="
+      background:
+        url('/static/images/map1.jpg');
+      background-size: 1500px 805px;
+      
+    ">
+{% endblock %}
+{% block css %}
+p{
+text-align:justify;
+line-height:25px;
+{% comment %} text-shadow: 1px 2px blue; {% endcomment %}
+text-indent:30px;
+padding-left:30px;
+text-transformation: capitalize;
+}
+p a{
+    color:blue;
+}
+a:hover{
+    border-bottom:2px solid red;
+}
+{% endblock  %}

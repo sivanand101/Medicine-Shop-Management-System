@@ -1,0 +1,162 @@
+{% extends 'basic.html' %} {% block body %}{% if product %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    var product = {{ product| safe }};
+</script>
+
+<div id="app">
+    {% comment %} [[message]] {% endcomment %}
+    <div class="container-fluid">
+    {% if total %}
+    <h3 class="text-center">Your Bill is Done. </h3>
+    <h3 class="text-center">Your Total= {{total}}rs </h3>
+    <h5 class="text-center">Make Another bill from below</h5>
+ 
+    {% endif %}
+        <div class="row">
+            <div class="col-sm-6">
+    <h3 class="text-center">Make a Bill</h3>
+               
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Products</label>
+                    </div>
+                    <select name="LeaveType" v-model="key" class="custom-select" id="inputGroupSelect01" @change="addToCart($event)">
+                        <option></option>
+                        <option v-for="(person,index) in product" :key="index" 
+                            :value="person">[[person.name]]
+
+                        </option>
+                    </select>
+                    
+
+                </div>
+            {% comment %} <ul>
+                <li v-for="(p,index) in product" :key="index">[[p.name]]- [[p.cost]]tk <button @click="addToCart(p)">Add TO cart</button></li>
+            </ul> {% endcomment %}
+
+                
+            </div>
+            <div class="col-sm-6">
+    <h3 class="text-center">Your Billing Cart</h3>
+
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="item-name">Name</span> - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -      
+                        <span class="item-qty text-center" text-align="center">Quantity</span> - - - - - - - - - - - - - - - - - - - - - - - - - -
+                        <span class="item-price float-right">Price</span>
+                    </li>
+                    <hr />
+                    <li v-for="(item, index) in cart" :key="index" class="list-group-item">
+                        <span class="float-right">
+                            <button @click="removeItem" class="btn btn-sm btn-danger">
+                                -
+                            </button></span>
+                        <span class="item-name">[[item.name]]</span>
+                        <span class="item-price float-right">$[[item.cost]] </span>
+                       <span class="float-right"> <input  style="color:black; background:white;" placeholder="Quantity?" type="text" v-model="item.qty" /> </span>
+                    </li>
+                    <hr />
+
+                    <li class="list-group-item">
+                        <span class="item-name">Total</span>
+                        <span class="item-price float-right" >Rs. [[totalPrice]] </span>
+                    </li  class="list-group-item">
+                    <form action="/makebill/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" :value="totalPrice" name="price" >
+                    <input type="hidden" :value="cartReturn" name="cart" >
+                    <div class="form-group">
+                      <label for="name">Name</label>
+                      <input type="text" class="form-control"  name="name"
+                        placeholder="Enter Customer Name" >
+                    </div>
+                    <div class="form-group">
+                      <label for="phone">Phone</label>
+                      <input type="text" class="form-control"  name="phone"
+                        placeholder="Enter Customer Phn Number" >
+                        <h2> GST = [[gST]] </h2>
+                        <h2> Discount = [[diSCOUNT]] </h2>
+                        <h2> Net Price = [[net_Price]] </h2>
+                    </div>
+
+                    
+                    <button class="btn btn-sm btn-primary" type="submit">Make Bill</button>
+                    </form>
+                    
+                    <hr />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var app = new Vue({
+  delimiters: ["[[", "]]"],
+  el: "#app",
+  data: {
+    message: "Hello Vue!",
+    product: product,
+    items: [],
+    cart: [],
+    key: "",
+    qty: 0,
+  },
+  computed: {
+    totalPrice() {
+      var total = 0.0;
+      this.cart.forEach((item) => {
+        total += parseFloat(item.cost * item.qty);
+      });
+      return total;
+    },
+    gST(){
+      var total = 0.0;
+      this.cart.forEach((item) => {
+        total += parseFloat(item.cost * item.qty);
+      });
+      return total*0.05;
+    },
+    diSCOUNT(){
+      var total = 0.0;
+      this.cart.forEach((item) => {
+        total += parseFloat(item.cost * item.qty);
+      });
+      return total*0.1;
+    },
+    net_Price(){
+      var total = 0.0;
+      this.cart.forEach((item) => {
+        total += parseFloat(item.cost * item.qty);
+      });
+      return total*0.95;
+    },
+    cartReturn() {
+      return JSON.stringify(this.cart);
+    },
+  },
+  methods: {
+    removeItem(index) {
+      this.cart.splice(index, 1);
+    },
+    addToCart(event) {
+      this.cart.push({
+        name: this.key.name,
+        cost: this.key.cost,
+        qty: 1,
+      });
+      console.log(this.cart);
+    },
+  },
+});
+// $('#cart').val(JSON.stringify(this.cart));
+</script>
+<body style="
+      background:
+        url('/static/images/map1.jpg');
+      background-size: 1500px 805px;
+      
+    ">
+{% else %}
+<p>No items available.</p>
+{% endif %} {% endblock %}

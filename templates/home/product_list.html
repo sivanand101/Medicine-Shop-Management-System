@@ -1,0 +1,112 @@
+{% extends 'basic.html' %}
+{% block body %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% if user.is_authenticated %}
+<div class="container-fluid">
+<div class="col-md-9 offset-md-1">
+<h3 class="text-center">List Of Medicines</h3>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Medicine ID</th>
+      <th scope="col">Medicine Name</th>
+      <th scope="col">Power (in mg)</th>
+      <th scope="col">Company Name</th>
+      <th scope="col">Cost Price</th>
+      <th scope="col">Selling Price</th>
+      <th scope="col">MFG Date</th>
+      <th scope="col">EXP Date</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Supplier Name</th>
+      <th scope="col">ADD</th>
+      <th scope="col">DELETE</th>
+      <th scope="col">Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for p in products %}
+    <tr>
+      <th scope="row">{{p.id}}</th>
+      <td>{{p.name}}</td>
+      <td>{{p.batch_no}}</td>
+      <td>{{p.company}}</td>
+      <td>{{p.cost}} RS/ps</td>
+      <td>{{p.selling_price}} RS/ps</td>
+      <td>{{p.mfg}}</td>
+      <td>{{p.exp}}</td>
+      <td>{{p.qty}}</td>
+      <td>{{p.supplier}}</td>
+      <td> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1">
+  ADD Quantitiy
+</button></td>
+      <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Delete
+</button></td>
+      <td><button  class="btn btn-primary"> <a href="/edit/{{p.id}}/">Edit</a></button></td>
+<!-- Modal -->
+<div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content" style="background:none; border: 2px solid green;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">DELETE</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+       Are You Sure to delete {{p.name}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"><a href="{% url 'home:delete' id=p.id %}">Delete</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade"  id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content" style="background:none; border: 2px solid green;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ADD Available Quantitiy</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+       <form method="post" action="/add/{{p.id}}/" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <fieldset class="form-group mx-auto">
+                <legend class="border-bottom text-center mb-4"><h2>Add Quantitiy in {{p.name}}</h2></legend>
+                <input type="text" name="qty">
+            </fieldset>
+            <button class="btn btn-outline-info " type="submit" value="submit">Add</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+      {% comment %} <td><a href="{% url 'home:delete' pk=p.id %}">Delete</a></td> {% endcomment %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+<body style="
+      background:
+        url('/static/images/map1.jpg');
+      background-size: 1500px 805px;
+      
+    ">
+{% else %}
+<h2>Please Log in to Create a Post</h2>
+{% endif %}
+{% endblock %}
+{% block css %}
+
+{% endblock  %}

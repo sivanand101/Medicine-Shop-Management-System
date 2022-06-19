@@ -1,0 +1,40 @@
+{% extends 'basic.html' %}
+{% block body %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% if user.is_authenticated %}
+<div class="col-md-6 offset-md-3">
+ <h3 class="text-center">List Of Suppliers</h3>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Supplier Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for p in supplier %}
+    <tr>
+      <th scope="row">{{p.id}}</th>
+      <td>{{p.name}}</td>
+      <td>{{p.email}}</td>
+      <td>{{p.phone}}</td>
+      <td><a href="/supedit/{{p.id}}/"><button class="btn btn-primary btn-sm">Edit</button></a></td>
+       </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<body style="
+      background:
+        url('/static/images/map1.jpg');
+      background-size: 1500px 805px;
+      
+    ">
+{% else %}
+<h2>Please Log in to Create a Post</h2>
+{% endif %}
+{% endblock body %}

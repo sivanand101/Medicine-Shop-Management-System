@@ -1,0 +1,41 @@
+{% extends 'basic.html' %}
+{% block body %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% if user.is_authenticated %}
+<div class="col-md-6 offset-md-3">
+ <h3 class="text-center">List Of Supplier Invoice</h3>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Supplier ID</th>
+      <th scope="col">Invoice Number</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Order date</th>
+      <th scope="col">Delivery Date</th>
+      <th scope="col">Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for si in suppliers %}
+    <tr>
+      <td scope="row">{{si.id}}</td>
+      <td>{{si.invoice_number}}</td>
+      <td>{{si.amount}}</td>
+      <td>{{si.order_date}}</td>
+      <td>{{si.delivery_date}}</td>
+      <td><a href="/empedit/{{si.id}}/"><button class="btn btn-primary btn-sm">Edit</button></a></td>
+       </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<body style="
+      background:
+        url('/static/images/map1.jpg');
+      background-size: 1500px 805px;
+    ">
+{% else %}
+<h2>Please Log in to Create a Post</h2>
+{% endif %}
+{% endblock body %}
